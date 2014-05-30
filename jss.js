@@ -7,7 +7,7 @@
 
 	Method(Functions);
 	SHOW : jss(selector).show();
-	HIDE : jss(selector).hide();;;;;;;
+	HIDE : jss(selector).hide();\
 
 *************************************/
 (function(global){
