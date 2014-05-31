@@ -50,7 +50,13 @@
 		});
 		return this;
 	};
-
+	
+	jss.fn.dmLayer = function(dimm, layer){
+		var dimm = $(dimm).items[0],
+		var layer = $(layer);
+	
+	};
+	
 	/* selector */
 	var doc = document,
 
