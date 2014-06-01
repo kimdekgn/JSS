@@ -1,34 +1,36 @@
 /************************************
 
 	ver. 0.1
+	Author : Jang Jeong Sik
+	
 	how to JSS
 	SELECTOR(class) : jss('h1.a'), jss('.a');
 	SELECTOR(id) : jss('#a');
 
 	Method(Functions);
 	SHOW : jss(selector).show();
-	HIDE : jss(selector).hide();\
+	HIDE : jss(selector).hide();
 
 *************************************/
 (function(global){
 	'use strict';
 	// jss infinitive
 	var jss = function(selector){
-		var items = $(selector);
-		return new jss.fn.init(items);
+		var s = $(selector);
+		return new jss.fn.init(s);
 	};
 
 	// jss.prototype, js.fn
 	jss.fn = jss.prototype = {
 		constructor : jss,
 		init : function(items){
-			this.items = items;
-			this.length = items.length;
+			this.s = s;
+			this.length = s.length;
 			return this;
 		},
 		each : function(recurr){
 			for(var i = 0, len = this.length; i < len; i++){
-				recurr.call(this.items[i], i);
+				recurr.call(this.s[i], i);
 			}
 			return this;
 		}
@@ -52,7 +54,7 @@
 	};
 	
 	jss.fn.dmLayer = function(dimm, layer){
-		var dimm = $(dimm).items[0],
+		var dimm = $(dimm).s[0],
 		var layer = $(layer);
 	
 	};
@@ -70,22 +72,22 @@
 	
 	jssExplore = function(selector){
 		var regexp = /^([#.]?)([a-z0-9\\*_-]*)$/i,
-			type = selector.charAt(0), tree, items, parser = jssParser(selector);
+			type = selector.charAt(0), tree, s, parser = jssParser(selector);
 
 		return doc['querySelectAll'] ? doc.querySelectAll(selector) : (function(){
 			if(selector && selector.constructor === String){
 				if(type === '#'){
-					doc['getElementById'] ? items =  doc.getElementById(selector.substr(1)) : items = '';
+					doc['getElementById'] ? s =  doc.getElementById(selector.substr(1)) : s = '';
 				} else if(parser){
 					parser[0] != '' && parser[0] != null ? tree = doc.getElementsByTagName(parser[0]) : tree = doc.getElementsByTagName('*');
-					items = [];
+					s = [];
 					if(regexp.exec(parser[1]).length > 0){
 						for(var i = 0, len = tree.length; i < len; i++){
-							tree[i].className == parser[1] ? items.push(tree[i]) : items;
+							tree[i].className == parser[1] ? s.push(tree[i]) : s;
 						}
 					}
 				}
-				return items;
+				return s;
 			}
 		})();
 	}, $ = jssExplore; // internal object
