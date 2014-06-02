@@ -32,8 +32,9 @@
 			var value, len = obj.length;
 			for(var i = 0; i < len; i++){
 				value = callback.call(obj.s[i], i);
+				if(value === false) break;
 			}
-			return value;
+			return obj;
 		}
 	};
 
