@@ -28,11 +28,12 @@
 			this.length = s.length;
 			return this;
 		},
-		each : function(recurr){
-			for(var i = 0, len = this.length; i < len; i++){
-				recurr.call(this.s[i], i);
+		each : function(obj, callbak){
+			var value, len = obj.length;
+			for(var i = 0; i < len; i++){
+				value = callback.call(obj.s[i], i);
 			}
-			return this;
+			return value;
 		}
 	};
 
