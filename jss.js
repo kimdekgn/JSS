@@ -68,11 +68,11 @@
 		if(typeof args === 'object') value = $$.returnArray(args, function(key){
 			return value.concat(key, this);
 		});
+		
 		this.each(this, function(){
 			for(var i = 0; i < value.length; i++){
 				for(var j = 0; j < value[i].length; j++){
-					//this.style[value[i][j]]
-					console.log(this.style[value[i][j]])
+					this.style[value[i][j]] = value[i][j+1];
 				}
 			}
 		});
