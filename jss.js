@@ -10,7 +10,12 @@
 	Method(Functions);
 	SHOW : jss(selector).show();
 	HIDE : jss(selector).hide();
-
+	CSS : jss(selector).css({
+		'attribute':'value',
+		'attribute':'value',
+		'attribute':'value'
+		...
+	});
 *************************************/
 (function(global){
 	'use strict';
