@@ -41,6 +41,9 @@
 			}
 			return obj;
 		},
+		get : function(idx){
+			return this.s[idx];
+		},
 		returnArray : function(obj, callback){
 			var i, value, ret = [];
 			for(i in obj){
