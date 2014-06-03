@@ -23,16 +23,26 @@
 	// jss.prototype, js.fn
 	jss.fn = jss.prototype = {
 		constructor : jss,
-		init : function(items){
+		init : function(s){
 			this.s = s;
 			this.length = s.length;
 			return this;
 		},
-		each : function(recurr){
-			for(var i = 0, len = this.length; i < len; i++){
-				recurr.call(this.s[i], i);
+		each : function(obj, callback){
+			var	i = 0, value, len = obj.length;
+			for(; i < len; i++){
+				value = callback.call(obj.s[i], i);
+				if(value === false) break;
 			}
-			return this;
+			return obj;
+		},
+		returnArray : function(obj, callback){
+			var i, value, ret = [];
+			for(i in obj){
+				value = callback.call(obj[i], i);
+				if(value != null) ret.push(value);
+			}
+			return ret;
 		}
 	};
 
@@ -40,25 +50,39 @@
 
 	/* common functions */
 	jss.fn.hide = function(){
-		this.each(function(i){
+		this.each(this, function(){
 			this.style.display = 'none';
 		});
 		return this;
 	};
 
 	jss.fn.show = function(){
-		this.each(function(i){
+		this.each(this, function(){
 			this.style.display = '';
 		});
 		return this;
 	};
 	
+	jss.fn.css = function(c){
+		var args = c, value = [];
+		if(typeof args === 'object') value = $$.returnArray(args, function(key){
+			return value.concat(key, this);
+		});
+		this.each(this, function(){
+			for(var i = 0; i < value.length; i++){
+				for(var j = 0; j < value[i].length; j++){
+					//this.style[value[i][j]]
+					console.log(this.style[value[i][j]])
+				}
+			}
+		});
+	};
+
 	jss.fn.dmLayer = function(dimm, layer){
 		var dimm = $(dimm).s[0],
-		var layer = $(layer);
-	
+			layer = $(layer);
 	};
-	
+
 	/* selector */
 	var doc = document,
 
@@ -69,7 +93,7 @@
 		}
 		else {return false;}
 	},
-	
+
 	jssExplore = function(selector){
 		var regexp = /^([#.]?)([a-z0-9\\*_-]*)$/i,
 			type = selector.charAt(0), tree, s, parser = jssParser(selector);
@@ -77,21 +101,21 @@
 		return doc['querySelectAll'] ? doc.querySelectAll(selector) : (function(){
 			if(selector && selector.constructor === String){
 				if(type === '#'){
-					doc['getElementById'] ? s =  doc.getElementById(selector.substr(1)) : s = '';
+					doc['getElementById'] ? s =  doc.getElementById(selector.substr(1)) : false;
 				} else if(parser){
 					parser[0] != '' && parser[0] != null ? tree = doc.getElementsByTagName(parser[0]) : tree = doc.getElementsByTagName('*');
 					s = [];
 					if(regexp.exec(parser[1]).length > 0){
 						for(var i = 0, len = tree.length; i < len; i++){
-							tree[i].className == parser[1] ? s.push(tree[i]) : s;
+							tree[i].className == parser[1] ? s.push(tree[i]) : false;
 						}
 					}
 				}
 				return s;
 			}
 		})();
-	}, $ = jssExplore; // internal object
-	
+	}, $ = jssExplore, $$ = jss.fn; // internal object
+
 	// global object
 	global.jss = jss;
 })(window);
